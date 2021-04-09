@@ -70,8 +70,9 @@ def apply_watermark():
     # GENERATE REQUEST FOR WATERMARKER
     
     qr_filename = get_s3_url(qr_name, bucket_name)
-    watermark_req_url = f"https://watermarker.expeditedaddons.com?api_key={os.environ['WATERMARKER_API_KEY']}&height=100&image_url={s3_url}&opacity=50&position=center&watermark_url={qr_filename}&width=100"
-
+    # watermark_req_url = f"https://watermarker.expeditedaddons.com?api_key={os.environ['WATERMARKER_API_KEY']}&height=100&image_url={s3_url}&opacity=50&position=center&watermark_url={qr_filename}&width=100"
+    watermark_req_url = 'https://watermarker.expeditedaddons.com/?api_key=' + os.environ['WATERMARKER_API_KEY'] + '&height=100&image_url=' + get_s3_url(bucket_name, qr_name) + '&opacity=50&position=center&watermark_url=https%3A%2F%2Fwww.expeditedaddons.com%2Fwatermark.png&width=100'
+    
     watermark_name = f"watermark_{filename}"
     request_and_save(watermark_req_url, watermark_name)
 
