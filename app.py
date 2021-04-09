@@ -24,7 +24,8 @@ s3_client = boto3.client('s3')
 
 # utility functions
 def get_s3_url(bucket_name, filename):
-    return f"https://{bucket_name}.s3.amazonaws.com/{filename}"
+    # return f"https://{bucket_name}.s3.amazonaws.com/{filename}"
+    return 'https://' + bucket_name + '.s3.amazonaws.com/' + filename
 
 
 def request_and_save(url, filename):
