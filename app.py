@@ -24,8 +24,7 @@ s3_client = boto3.client('s3')
 
 # utility functions
 def get_s3_url(bucket_name, filename):
-    # return f"https://{bucket_name}.s3.amazonaws.com/{filename}"
-    return 'https://' + bucket_name + '.s3.amazonaws.com/' + filename
+    return f"https://{bucket_name}.s3.amazonaws.com/{filename}"
 
 
 def request_and_save(url, filename):
@@ -60,8 +59,6 @@ def apply_watermark():
     r1 = s3_client.upload_file(path, bucket_name, filename, ExtraArgs={'ACL': 'public-read'})
 
     # GENERATE REQUEST FOR QRACKAJACK
-    s3_url = get_s3_url(bucket_name, filename)
-    # qr_req_url = f"https://qrackajack.expeditedaddons.com/?api_key={os.environ['QRACKAJACK_API_KEY']}&bg_color=%23ffffff&content={s3_url}&fg_color=%23000000&height=256&width=256"
     qr_req_url = 'https://qrackajack.expeditedaddons.com/?api_key=' + os.environ['QRACKAJACK_API_KEY'] + '&bg_color=%23ffffff&content=' + get_s3_url(bucket_name, filename) + '&fg_color=%23000000&height=256&width=256'
     
     qr_name = f"qr_{filename}"
@@ -71,9 +68,6 @@ def apply_watermark():
 
 
     # GENERATE REQUEST FOR WATERMARKER
-    
-    qr_filename = get_s3_url(bucket_name, qr_name)
-    # watermark_req_url = f"https://watermarker.expeditedaddons.com?api_key={os.environ['WATERMARKER_API_KEY']}&height=100&image_url={s3_url}&opacity=50&position=center&watermark_url={qr_filename}&width=100"
     watermark_req_url = 'https://watermarker.expeditedaddons.com/?api_key=' + os.environ['WATERMARKER_API_KEY'] + '&height=100&image_url=' + get_s3_url(bucket_name, qr_name) + '&opacity=50&position=center&watermark_url=https%3A%2F%2Fwww.expeditedaddons.com%2Fwatermark.png&width=100'
     
     watermark_name = f"watermark_{filename}"
